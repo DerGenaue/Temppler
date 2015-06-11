@@ -3,10 +3,12 @@ package com.temppler;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -15,8 +17,12 @@ public class TempplerActivity extends ActionBarActivity {
 
 
     private SeekBar valueIn;
-    private TextView valueOut;
+    private TextView valueOut, loudnessTOut;
+    private ProgressBar loudnessOut;
+    private AudioIn aIn;
+    private GraphView graph;
     private boolean done = false;
+    private double average = 0;
 
 
     @Override
@@ -26,14 +32,21 @@ public class TempplerActivity extends ActionBarActivity {
 
         valueIn = (SeekBar) this.findViewById(R.id.valueIn);
         valueOut = (TextView) this.findViewById(R.id.valueOut);
+        loudnessTOut = (TextView) this.findViewById(R.id.loudnessText);
+        loudnessOut = (ProgressBar) this.findViewById(R.id.loudness);
+        graph = (GraphView) this.findViewById(R.id.graph);
 
         valueIn.setOnSeekBarChangeListener(OSBCL);
         valueIn.setProgress(400);
         valueOut.setText("0");
 
+        aIn = AudioIn.getInstance(aRec);
+
         Thread t = new Thread(new OutDACrunnable());
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
+        aIn.start();
+        (new Thread(doFreqTest)).start();
     }
 
 
@@ -76,6 +89,63 @@ public class TempplerActivity extends ActionBarActivity {
         public void onStopTrackingTouch(SeekBar seekBar) {
         }
     };
+
+
+    private AudioReceiverListener aRec = new AudioReceiverListener(){
+        @Override
+        public void capturedAudioReceived(short[] buffer) {
+            int maxGrad = 0;
+            for (int i = 1; i < buffer.length; i++){
+                if(Math.abs(buffer[i] - buffer[i-1]) > maxGrad){
+                    maxGrad = Math.abs(buffer[i] - buffer[i-1]);
+                }
+            }
+
+            average = (average + maxGrad) / 2;
+
+            loudnessOut.post(new Runnable() {
+                public void run() {
+                    loudnessOut.setProgress((int) average);
+                    loudnessTOut.setText("VolIn: " + (int) average);
+                }
+            });
+        }
+    };
+
+
+
+
+    private Runnable doFreqTest = new Runnable(){
+
+        int step = 20, samples = 10;
+        int val = 0;
+        private double[] vals = new double[20000 / step];
+        public void run(){
+            for(int i = 0; i < vals.length; i++){
+                vals[i] = 0;
+            }
+            graph.setVals(vals);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {}
+            for(int i = 0; i < vals.length; i++){
+                val = step * i;
+                valueIn.post(new Runnable(){public void run(){valueIn.setProgress(val);}});
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {}
+                for(int j = 0; j < samples; j++) {
+                    vals[i] += average;
+                    try {
+                        Thread.sleep(5);
+                    } catch (InterruptedException e) {}
+                }
+                vals[i] /= samples;
+                graph.postInvalidate();
+            }
+        }
+    };
+
 
 
 
