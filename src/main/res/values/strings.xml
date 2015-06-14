@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Temppler</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="text_emit">Signal aussenden</string>
+    <string name="text_receive">Signal empfangen</string>
 </resources>

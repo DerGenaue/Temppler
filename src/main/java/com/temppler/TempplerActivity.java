@@ -1,10 +1,9 @@
 package com.temppler;
 
+import android.app.Activity;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,9 +11,7 @@ import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-
-public class TempplerActivity extends ActionBarActivity {
-
+public class TempplerActivity extends Activity {
 
     private SeekBar valueIn;
     private TextView valueOut, loudnessTOut;
@@ -30,11 +27,11 @@ public class TempplerActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main);
 
-        valueIn = (SeekBar) this.findViewById(R.id.valueIn);
+/*        valueIn = (SeekBar) this.findViewById(R.id.valueIn);
         valueOut = (TextView) this.findViewById(R.id.valueOut);
         loudnessTOut = (TextView) this.findViewById(R.id.loudnessText);
         loudnessOut = (ProgressBar) this.findViewById(R.id.loudness);
-        graph = (GraphView) this.findViewById(R.id.graph);
+        graph = (GraphView) this.findViewById(R.id.graph); 
 
         valueIn.setOnSeekBarChangeListener(OSBCL);
         valueIn.setProgress(400);
@@ -46,14 +43,13 @@ public class TempplerActivity extends ActionBarActivity {
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
         aIn.start();
-        (new Thread(doFreqTest)).start();
+        (new Thread(doFreqTest)).start(); */ 
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -63,11 +59,6 @@ public class TempplerActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

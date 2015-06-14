@@ -1,8 +1,33 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme">
     </style>
 
+    <!--  Android, why u no css? :( -->
+	<style name="Lux.Card" parent="">
+        <item name="android:background">#ffff8800</item>
+        <item name="android:padding">16.0dip</item>
+    </style>
+    
+	<style name="Lux.CardHeader" parent="">
+        <item name="android:textColor">#ff000000</item>
+        <item name="android:background">#ff888888</item>       
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">4.0dip</item>
+    </style>
+    
+	<style name="Lux.Button" parent="@android:style/Widget.Button">
+        <item name="android:textSize">12.0sp</item>
+        <item name="android:textColor">#ff858585</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:background">#ffffffff</item>
+        <item name="android:padding">0.0dip</item>
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">8.0dip</item>
+        <item name="android:layout_weight">0.333</item>
+    </style>
+    
 </resources>
