@@ -1,7 +1,36 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
-    <style name="AppTheme">
-    </style>
+    <style name="AppTheme" parent="@android:style/Theme.Light" />
 
+    <!--  Android, why u no css? :( -->
+	<style name="Lux.Card" parent="">
+        <item name="android:background">@drawable/card_background</item>
+ 		<item name="android:layout_marginTop">5dp</item>
+ 		<item name="android:layout_marginLeft">10dp</item>
+ 		<item name="android:layout_marginRight">10dp</item>
+ 		<item name="android:layout_marginBottom">5dp</item> 
+    </style>
+    
+	<style name="Lux.CardHeader" parent="">
+        <item name="android:textColor">@color/heavy_text</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:padding">10dp</item>  
+        <item name="android:textSize">20sp</item>     
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+    
+	<style name="Lux.Button" parent="@android:style/Widget.Button">
+        <item name="android:textSize">12.0sp</item>
+        <item name="android:textColor">@color/light_text</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:padding">0.0dip</item>
+        <item name="android:layout_width">0.0dip</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawablePadding">8.0dip</item>
+        <item name="android:layout_weight">0.333</item>
+    </style>
+    
 </resources>

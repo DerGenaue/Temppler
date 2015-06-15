@@ -1,21 +1,30 @@
 package com.temppler;
 
+import android.app.Activity;
 import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+public class TempplerActivity extends Activity {
 
-public class TempplerActivity extends ActionBarActivity {
-
-
+	private Button buttonEmit, buttonReceive;
+	
+	private ApplicationState state = ApplicationState.START;
+	
+	private LinearLayout viewMaster, cardEmit, cardReceive;
+	private View detailsEmit, detailsReceive;
+	
     private SeekBar valueIn;
     private TextView valueOut, loudnessTOut;
     private ProgressBar loudnessOut;
@@ -28,13 +37,27 @@ public class TempplerActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.layout_main);
+
+        viewMaster  = (LinearLayout) findViewById(R.id.layout_master);
+        cardEmit    = (LinearLayout) findViewById(R.id.layout_emit);
+        cardReceive = (LinearLayout) findViewById(R.id.layout_receive);
+
+        TOnClickListener onclick = this.new TOnClickListener();
+        buttonEmit = (Button) findViewById(R.id.button_emit);
+        buttonReceive = (Button) findViewById(R.id.button_receive);
+        buttonEmit.setOnClickListener(onclick);
+        buttonReceive.setOnClickListener(onclick);
+                
+        detailsEmit = findViewById(R.id.details_emit);
+        detailsReceive = findViewById(R.id.details_receive);
 
         valueIn = (SeekBar) this.findViewById(R.id.valueIn);
         valueOut = (TextView) this.findViewById(R.id.valueOut);
         loudnessTOut = (TextView) this.findViewById(R.id.loudnessText);
         loudnessOut = (ProgressBar) this.findViewById(R.id.loudness);
-        graph = (GraphView) this.findViewById(R.id.graph);
+        graph = (GraphView) this.findViewById(R.id.graph); 
 
         valueIn.setOnSeekBarChangeListener(OSBCL);
         valueIn.setProgress(400);
@@ -53,7 +76,6 @@ public class TempplerActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -63,11 +85,6 @@ public class TempplerActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -201,5 +218,53 @@ public class TempplerActivity extends ActionBarActivity {
             }
             // Log.d(MyTag, "genTone: done");
         }
+    }
+    
+    @Override
+    public void onBackPressed() {
+    	if(state != ApplicationState.START) {
+    		if(state == ApplicationState.EMIT) {
+    			// restore Emit Card
+    			detailsEmit.setVisibility(View.GONE);
+				buttonEmit.setVisibility(View.VISIBLE);
+    		} else if (state == ApplicationState.RECEIVE) {
+    			// restore Receive Card
+    			detailsReceive.setVisibility(View.GONE);
+				buttonReceive.setVisibility(View.VISIBLE);
+    		}
+    		// make both Cards Visible
+			cardEmit.setVisibility(View.VISIBLE);
+    		cardReceive.setVisibility(View.VISIBLE);
+    		
+    		// set Application State
+    		state = ApplicationState.START;
+    	} else {
+    		super.onBackPressed();
+    	}
+    };
+    
+    private class TOnClickListener implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			if(null == v)
+				return;
+			if(v.getId() == R.id.button_emit && state == ApplicationState.START) {
+				// hide receive card
+				cardReceive.setVisibility(View.GONE);
+				// extend emit card
+				detailsEmit.setVisibility(View.VISIBLE);
+				buttonEmit.setVisibility(View.GONE);
+				// set App State
+				state = ApplicationState.EMIT;
+			} else if(v.getId() == R.id.button_receive && state == ApplicationState.START) {
+				// hide receive card
+				cardReceive.setVisibility(View.GONE);
+				// extend emit card
+				detailsEmit.setVisibility(View.VISIBLE);
+				buttonEmit.setVisibility(View.GONE);
+				// set App State
+				state = ApplicationState.EMIT;
+			}
+		}
     }
 }
