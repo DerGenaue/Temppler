@@ -1,8 +1,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Base application theme. -->
-    <style name="AppTheme">
-    </style>
+    <style name="AppTheme" parent="@android:style/Theme.Light" />
 
     <!--  Android, why u no css? :( -->
 	<style name="Lux.Card" parent="">

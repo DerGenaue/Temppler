@@ -5,6 +5,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +22,8 @@ public class TempplerActivity extends Activity {
 	
 	private ApplicationState state = ApplicationState.START;
 	
-	private LinearLayout masterView, emitCard, receiveCard;
+	private LinearLayout viewMaster, cardEmit, cardReceive;
+	private View detailsEmit, detailsReceive;
 	
     private SeekBar valueIn;
     private TextView valueOut, loudnessTOut;
@@ -38,9 +40,9 @@ public class TempplerActivity extends Activity {
         
         setContentView(R.layout.layout_main);
 
-        masterView  = (LinearLayout) findViewById(R.id.layout_master);
-        emitCard    = (LinearLayout) findViewById(R.id.layout_emit);
-        receiveCard = (LinearLayout) findViewById(R.id.layout_receive);
+        viewMaster  = (LinearLayout) findViewById(R.id.layout_master);
+        cardEmit    = (LinearLayout) findViewById(R.id.layout_emit);
+        cardReceive = (LinearLayout) findViewById(R.id.layout_receive);
 
         TOnClickListener onclick = this.new TOnClickListener();
         buttonEmit = (Button) findViewById(R.id.button_emit);
@@ -48,7 +50,10 @@ public class TempplerActivity extends Activity {
         buttonEmit.setOnClickListener(onclick);
         buttonReceive.setOnClickListener(onclick);
                 
-/*        valueIn = (SeekBar) this.findViewById(R.id.valueIn);
+        detailsEmit = findViewById(R.id.details_emit);
+        detailsReceive = findViewById(R.id.details_receive);
+
+        valueIn = (SeekBar) this.findViewById(R.id.valueIn);
         valueOut = (TextView) this.findViewById(R.id.valueOut);
         loudnessTOut = (TextView) this.findViewById(R.id.loudnessText);
         loudnessOut = (ProgressBar) this.findViewById(R.id.loudness);
@@ -64,7 +69,7 @@ public class TempplerActivity extends Activity {
         t.setPriority(Thread.MAX_PRIORITY);
         t.start();
         aIn.start();
-        (new Thread(doFreqTest)).start(); */ 
+        (new Thread(doFreqTest)).start();
     }
 
 
@@ -218,9 +223,20 @@ public class TempplerActivity extends Activity {
     @Override
     public void onBackPressed() {
     	if(state != ApplicationState.START) {
-    		masterView.removeAllViews(); // remove ALL cards first for the right order
-    		masterView.addView(emitCard); 
-    		masterView.addView(receiveCard);
+    		if(state == ApplicationState.EMIT) {
+    			// restore Emit Card
+    			detailsEmit.setVisibility(View.GONE);
+				buttonEmit.setVisibility(View.VISIBLE);
+    		} else if (state == ApplicationState.RECEIVE) {
+    			// restore Receive Card
+    			detailsReceive.setVisibility(View.GONE);
+				buttonReceive.setVisibility(View.VISIBLE);
+    		}
+    		// make both Cards Visible
+			cardEmit.setVisibility(View.VISIBLE);
+    		cardReceive.setVisibility(View.VISIBLE);
+    		
+    		// set Application State
     		state = ApplicationState.START;
     	} else {
     		super.onBackPressed();
@@ -230,21 +246,25 @@ public class TempplerActivity extends Activity {
     private class TOnClickListener implements OnClickListener {
 		@Override
 		public void onClick(View v) {
-			if(null != v) {
-				if(v.getId() == R.id.button_emit) {
-					if(state == ApplicationState.START) {
-						masterView.removeView(receiveCard);
-						state = ApplicationState.EMIT;
-					}
-				}
-				else if(v.getId() == R.id.button_receive) {
-					if(state == ApplicationState.START) {
-						masterView.removeView(emitCard);
-						state = ApplicationState.RECEIVE;
-					}
-				}
+			if(null == v)
+				return;
+			if(v.getId() == R.id.button_emit && state == ApplicationState.START) {
+				// hide receive card
+				cardReceive.setVisibility(View.GONE);
+				// extend emit card
+				detailsEmit.setVisibility(View.VISIBLE);
+				buttonEmit.setVisibility(View.GONE);
+				// set App State
+				state = ApplicationState.EMIT;
+			} else if(v.getId() == R.id.button_receive && state == ApplicationState.START) {
+				// hide receive card
+				cardReceive.setVisibility(View.GONE);
+				// extend emit card
+				detailsEmit.setVisibility(View.VISIBLE);
+				buttonEmit.setVisibility(View.GONE);
+				// set App State
+				state = ApplicationState.EMIT;
 			}
 		}
-    	
     }
 }

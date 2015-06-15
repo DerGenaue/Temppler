@@ -2,7 +2,11 @@
 <LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android" android:id="@+id/layout_emit">
 	<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent" style="@style/Lux.Card">
 	  	<TextView android:text="@string/text_emit" style="@style/Lux.CardHeader" />
-    	<RelativeLayout android:gravity="center" android:layout_width="fill_parent" android:layout_height="0.0dip" android:layout_weight="1.0">
+    	<RelativeLayout 
+    	    android:gravity="center"
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="0.0dip" 
+    	    android:layout_weight="1.0">
             <LinearLayout android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
                 <Button 
                     android:id="@+id/button_emit"
@@ -10,5 +14,11 @@
                     style="@style/Lux.Button" />
             </LinearLayout>
         </RelativeLayout>
+        <include
+        	android:layout_width="fill_parent"
+        	android:layout_height="fill_parent"
+        	android:layout_weight="0.5"
+        	android:visibility="gone"
+        	layout="@layout/details_emit" />
 	</LinearLayout>
 </LinearLayout>
