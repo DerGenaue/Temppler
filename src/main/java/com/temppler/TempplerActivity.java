@@ -7,12 +7,22 @@ import android.media.AudioTrack;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 public class TempplerActivity extends Activity {
 
+	private Button buttonEmit, buttonReceive;
+	
+	private ApplicationState state = ApplicationState.START;
+	
+	private LinearLayout masterView, emitCard, receiveCard;
+	
     private SeekBar valueIn;
     private TextView valueOut, loudnessTOut;
     private ProgressBar loudnessOut;
@@ -25,8 +35,19 @@ public class TempplerActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.layout_main);
 
+        masterView  = (LinearLayout) findViewById(R.id.layout_master);
+        emitCard    = (LinearLayout) findViewById(R.id.layout_emit);
+        receiveCard = (LinearLayout) findViewById(R.id.layout_receive);
+
+        TOnClickListener onclick = this.new TOnClickListener();
+        buttonEmit = (Button) findViewById(R.id.button_emit);
+        buttonReceive = (Button) findViewById(R.id.button_receive);
+        buttonEmit.setOnClickListener(onclick);
+        buttonReceive.setOnClickListener(onclick);
+                
 /*        valueIn = (SeekBar) this.findViewById(R.id.valueIn);
         valueOut = (TextView) this.findViewById(R.id.valueOut);
         loudnessTOut = (TextView) this.findViewById(R.id.loudnessText);
@@ -192,5 +213,38 @@ public class TempplerActivity extends Activity {
             }
             // Log.d(MyTag, "genTone: done");
         }
+    }
+    
+    @Override
+    public void onBackPressed() {
+    	if(state != ApplicationState.START) {
+    		masterView.removeAllViews(); // remove ALL cards first for the right order
+    		masterView.addView(emitCard); 
+    		masterView.addView(receiveCard);
+    		state = ApplicationState.START;
+    	} else {
+    		super.onBackPressed();
+    	}
+    };
+    
+    private class TOnClickListener implements OnClickListener {
+		@Override
+		public void onClick(View v) {
+			if(null != v) {
+				if(v.getId() == R.id.button_emit) {
+					if(state == ApplicationState.START) {
+						masterView.removeView(receiveCard);
+						state = ApplicationState.EMIT;
+					}
+				}
+				else if(v.getId() == R.id.button_receive) {
+					if(state == ApplicationState.START) {
+						masterView.removeView(emitCard);
+						state = ApplicationState.RECEIVE;
+					}
+				}
+			}
+		}
+    	
     }
 }
