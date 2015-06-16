@@ -44,13 +44,13 @@ public class Emitter extends Device {
 		done = false;
         t.start();
         aIn.start();
-        (new Thread(doFreqTest)).start();
+        // (new Thread(doFreqTest)).start();
 	}
 	
 	public void stop() {
 		done = true;
-		if(aIn.isRecording())
-			aIn.stop();
+        if(aIn != null && aIn.isRecording())
+            aIn.stop();
 	}
 	
 	public void destroy() {

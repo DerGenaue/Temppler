@@ -15,27 +15,27 @@ import java.util.List;
 public class GraphView extends View {
 
     private double[] vals;
-
+    private double scale = -1;
 
     public GraphView(Context c, AttributeSet s){
         super(c, s);
     }
 
-    public void setVals(double[] v){
+    public synchronized void setVals(double[] v){
         vals = v;
     }
 
 
-    public void draw(Canvas c){
+    public synchronized void draw(Canvas c){
         if(vals == null || c == null)
             return;
-        double max = 0;
-        for (int i = 0; i < vals.length; i++) {
-            if (vals[i] > max) {
-                max = vals[i];
-            }
-        }
-        float w = this.getWidth(), h = this.getHeight(),
+        double max = scale;
+        if(max <= 0)
+            for (int i = 0; i < vals.length; i++)
+                if (vals[i] > max)
+                    max = vals[i];
+
+        float w = this.getWidth(), h = this.getHeight()-1,
                 x = w/vals.length,
                 y = (float) (h/max);
         Paint p = new Paint();
@@ -51,4 +51,8 @@ public class GraphView extends View {
     }
 
 
+
+    public void setScale(double s){
+        scale = s;
+    }
 }
