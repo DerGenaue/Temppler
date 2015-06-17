@@ -6,7 +6,7 @@ public class Receiver extends Device {
 	private AudioIn aIn;
 	private FFT fft;
 	private GraphView graph;
-	private double[] x = new double[1024], y = new double[x.length], display = new double[x.length/2];
+	private double[] x = new double[4096], y = new double[x.length], display = new double[x.length/2];
     boolean run = false, gotToDo = false;
 
 	private ShortArrayBuffer inputBuffer;
@@ -55,6 +55,7 @@ public class Receiver extends Device {
 		}
 		graph.setVals(display);
 		graph.postInvalidate();
+		inputBuffer.clear();
 	}
 
 
@@ -109,7 +110,7 @@ class ShortArrayBuffer{
 	}
 
 	public synchronized int size(){
-		return indizes.get(indizes.size()-1) - offset;
+		return indizes.isEmpty() ? 0 : indizes.get(indizes.size()-1) - offset;
 	}
 
 	public synchronized short shift(){
@@ -124,5 +125,11 @@ class ShortArrayBuffer{
 		offset++;
 
 		return list.get(0)[offset-1];
+	}
+
+	public synchronized void clear(){
+		list.clear();
+		indizes.clear();
+		offset = 0;
 	}
 }
