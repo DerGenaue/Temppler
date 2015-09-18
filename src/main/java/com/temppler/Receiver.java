@@ -1,21 +1,32 @@
 package com.temppler;
 
+import android.widget.TextView;
+
 import java.util.ArrayList;
 
 public class Receiver extends Device {
 	private AudioIn aIn;
 	private FFT fft;
-	private GraphView graph;
-	private double[] x = new double[4096], y = new double[x.length], display = new double[x.length/2];
+	private GraphView graph, historyG;
+	private TextView freqFound;
+	private double[] x = new double[4096], y = new double[x.length], display = new double[x.length/2], history = new double[100];
     boolean run = false, gotToDo = false;
+	private int fMax = 0;
 
 	private ShortArrayBuffer inputBuffer;
 
 	public Receiver(TempplerActivity context) {
 		graph = (GraphView) context.findViewById(R.id.spectrumView);
+		historyG = (GraphView) context.findViewById(R.id.historyView);
+		freqFound = (TextView) context.findViewById(R.id.freqFound);
 		fft = new FFT(x.length);
 		inputBuffer = new ShortArrayBuffer();
 		graph.setScale(10);
+
+		historyG.setScale(200);
+		for(int i = 0; i < history.length; i++)
+			history[i] = i*2;
+		historyG.setVals(history);
 	}
 
 	@Override
@@ -32,7 +43,7 @@ public class Receiver extends Device {
 
 	@Override
 	public void stop() {
-		if(aIn.isRecording())
+		if(aIn != null && aIn.isRecording())
 			aIn.stop();
         run = false;
 	}
@@ -50,9 +61,22 @@ public class Receiver extends Device {
 			y[i] = 0;
 		}
 		fft.fft(x, y);
+		double max = 0;
 		for(int i = 0; i < display.length; i++){
-			display[i] = x[i];
+			display[i] = Math.abs(x[i]);
+			if(i > display.length / 2 && display[i] > max){
+				max = display[i];
+				fMax = i;
+			}
 		}
+		historyG.pushVal((double) fMax / display.length * aIn.getSamplingRate() / 2 -18900);
+		historyG.postInvalidate();
+		freqFound.post(new Runnable() {
+						   @Override
+						   public void run() {
+							   freqFound.setText("Peak found at " + String.format("%2.2f", (double) fMax / display.length * aIn.getSamplingRate() / 2) + " kHz");
+						   }
+					   });
 		graph.setVals(display);
 		graph.postInvalidate();
 		inputBuffer.clear();
@@ -64,7 +88,7 @@ public class Receiver extends Device {
             while(run){
                 while(!gotToDo)
                     try {
-                        Thread.sleep(50);
+                        Thread.sleep(10);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

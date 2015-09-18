@@ -9,12 +9,35 @@
     <!-- Placeholder View -->
     <view
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
+        class="com.temppler.GraphView"
+        android:id="@+id/historyView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_alignParentTop="true" />
+    <view
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
         class="com.temppler.GraphView"
         android:id="@+id/spectrumView"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="60dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/historyView"
+        android:layout_above="@+id/freqFound"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Freq not found blablablablablablub"
+        android:id="@+id/freqFound"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp" />
+
 </RelativeLayout>

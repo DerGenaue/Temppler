@@ -79,11 +79,12 @@ public class TempplerActivity extends Activity {
 
 
     protected void onStop(){
+		super.onStop();
     	for(Device d : devices) {
     		d.stop();
     		d.destroy();
     	}
-    	System.exit(0);
+    	//System.exit(0);
     }
   
     @Override

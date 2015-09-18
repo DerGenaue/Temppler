@@ -87,6 +87,12 @@ public class AudioIn implements Runnable {
         }
     }
 
+
+
+    public int getSamplingRate(){
+        return samplePerSec;
+    }
+
     /*
      * (non-Javadoc)
      *

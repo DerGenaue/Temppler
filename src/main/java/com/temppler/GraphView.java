@@ -16,6 +16,7 @@ public class GraphView extends View {
 
     private double[] vals;
     private double scale = -1;
+    private int offset = 0;
 
     public GraphView(Context c, AttributeSet s){
         super(c, s);
@@ -23,6 +24,15 @@ public class GraphView extends View {
 
     public synchronized void setVals(double[] v){
         vals = v;
+    }
+
+    public synchronized void setOffset(int o){
+        offset = o % vals.length;
+    }
+    public synchronized void pushVal(double val){
+        vals[offset] = val;
+        offset++;
+        offset %= vals.length;
     }
 
 
@@ -43,7 +53,7 @@ public class GraphView extends View {
         p.setStrokeWidth(1);
 
         for (int i = 1; i < vals.length; i++) {
-            c.drawLine((i-1)*x, h-(float)(vals[i-1]*y), i*x, h-(float)(vals[i]*y), p);
+            c.drawLine((i-1)*x, h-(float)(vals[(i-1+offset)%vals.length]*y), i*x, h-(float)(vals[(i+offset)%vals.length]*y), p);
         }
 
         c.drawLine(0, 0, 0, h, p);

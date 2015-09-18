@@ -29,8 +29,8 @@ public class Emitter extends Device {
         graph = (GraphView) context.findViewById(R.id.graph); 
 
         valueIn.setOnSeekBarChangeListener(OSBCL);
-        valueIn.setProgress(400);
-        valueOut.setText("0");
+        valueIn.setProgress(19000);
+        valueOut.setText("19000 Hz");
 	}
 	
 	public void init() {
