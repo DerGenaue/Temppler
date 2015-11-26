@@ -6,12 +6,13 @@
     android:background="@color/background"
     android:gravity="fill_vertical"
     android:orientation="vertical" 
-    android:id="@+id/layout_master">
+    android:id="@+id/layout_master"
+    android:padding="6dp" >
 
     <include
+        android:layout_weight="1"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1"
         layout="@layout/card_emit" />
 
     <include

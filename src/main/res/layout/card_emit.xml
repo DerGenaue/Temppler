@@ -9,11 +9,11 @@
 	card_view:cardUseCompatPadding="true"
 	android:id="@+id/layout_emit" >
 
-	<LinearLayout 
+	<LinearLayout
+		android:padding="12dp"
 	    android:orientation="vertical"
 	    android:layout_width="fill_parent" 
-	    android:layout_height="fill_parent" 
-	    style="@style/Lux.Card">
+	    android:layout_height="fill_parent" >
 	  	<TextView 
 	  	    android:text="@string/text_emit" 
 	  	    style="@style/Lux.CardHeader" />
@@ -25,10 +25,12 @@
             <LinearLayout 
                 android:orientation="horizontal" 
                 android:layout_width="fill_parent" 
-                android:layout_height="wrap_content">
+                android:layout_height="fill_parent">
                 <Button 
                     android:id="@+id/button_emit"
                     android:text="@string/text_emit"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
                     style="@style/Lux.Button" />
             </LinearLayout>
         </RelativeLayout>
