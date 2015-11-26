@@ -1,8 +1,7 @@
-<<<<<<< HEAD
 /build
 proguard-rules.pro
 /libs
-=======
+
 # Built application files
 *.apk
 *.ap_
@@ -35,4 +34,3 @@ proguard/
 /.idea/libraries
 .DS_Store
 /build
->>>>>>> 280be7470d75d69a8a635873fdea97ab0729e610
