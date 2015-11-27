@@ -14,9 +14,9 @@
 	    android:orientation="vertical"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="fill_parent" >
-	  	<TextView 
-	  	    android:text="@string/text_emit" 
-	  	    style="@style/Lux.CardHeader" />
+	  	<TextView
+			style="@style/Lux.CardHeader"
+	  	    android:text="@string/text_emit" />
     	<RelativeLayout 
     	    android:gravity="center"
     	    android:layout_width="fill_parent"
@@ -26,12 +26,10 @@
                 android:orientation="horizontal" 
                 android:layout_width="fill_parent" 
                 android:layout_height="fill_parent">
-                <Button 
+                <Button
+					style="@style/Lux.Button"
                     android:id="@+id/button_emit"
-                    android:text="@string/text_emit"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent"
-                    style="@style/Lux.Button" />
+                    android:text="@string/text_emit" />
             </LinearLayout>
         </RelativeLayout>
         <include
