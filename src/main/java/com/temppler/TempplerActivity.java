@@ -7,6 +7,7 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +25,7 @@ public class TempplerActivity extends Activity {
 	
 	private ApplicationState state = ApplicationState.START;
 	
-	private LinearLayout viewMaster, cardEmit, cardReceive;
+	private CardView cardEmit, cardReceive;
 	private View detailsEmit, detailsReceive;
 	
 	private LinkedList<Device> devices;
@@ -41,9 +42,8 @@ public class TempplerActivity extends Activity {
         
         setContentView(R.layout.layout_main);
 
-        viewMaster  = (LinearLayout) findViewById(R.id.layout_master);
-        cardEmit    = (LinearLayout) findViewById(R.id.layout_emit);
-        cardReceive = (LinearLayout) findViewById(R.id.layout_receive);
+        cardEmit    = (CardView) findViewById(R.id.layout_emit);
+        cardReceive = (CardView) findViewById(R.id.layout_receive);
 
         TOnClickListener onclick = this.new TOnClickListener();
         buttonEmit = (Button) findViewById(R.id.button_emit);
